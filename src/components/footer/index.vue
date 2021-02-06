@@ -13,7 +13,7 @@
 */
 
 export default {
-  name: 'Menu',
+  name: 'Footer',
   props: {
     /* ... */
   },
@@ -43,7 +43,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
     h1{
       color: red
     }

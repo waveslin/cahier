@@ -1,17 +1,26 @@
+
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <main id="app">
+    <Navigation />
+    
+      <img alt="Vue logo" src="./assets/logo.png">
+      <Dashboard />
+
+    <Footer />
+  </main>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import Navigation from './components/navigation/index';
+import Footer from './components/footer/index';
+import Dashboard from './components/dashboard/index';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Navigation,
+    Footer,
+    Dashboard
   }
 };
 </script>

@@ -36,10 +36,6 @@ export default {
   },
   created () {
     /* ... */
-    const database = openDatabase('cahier', '1.0', 'client sql database for mini project cahier', 5 * 1024 * 1024);
-    database.transaction((tx) => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id unique, log)');
-    });
   },
   mounted () {
 

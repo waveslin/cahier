@@ -1,12 +1,10 @@
 <template>
-    <header>
-
-    </header>
+    <section id='bookkeeping' class="uk-card-secondary"></section>
 </template>
 
 <script>
 export default {
-  name: 'Navigation',
+  name: 'Bookkeeping',
   props: {},
   components: {},
   data () {
@@ -20,10 +18,9 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
-  header{
-    margin: 0;
-    padding: 50px;
-    background-color: #2aece3;
-  }
+<style>
+    section#bookkeeping{
+      background-color: #b41515;
+      padding: 40px;
+    }
 </style>

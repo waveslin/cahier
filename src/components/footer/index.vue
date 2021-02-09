@@ -1,7 +1,6 @@
 <template>
-    <div>
-
-    </div>
+    <footer>
+    </footer>
 </template>
 
 <script>
@@ -44,7 +43,9 @@ export default {
 </script>
 
 <style lang="css" scoped>
-    h1{
-      color: red
+    footer{
+      margin: 0;
+      padding: 20px;
+      background-color: #21e7dd;
     }
 </style>

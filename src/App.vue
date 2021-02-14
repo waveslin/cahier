@@ -2,13 +2,11 @@
   <main id="cahier">
     <Navigation />
 
-    <button v-on:click="changeRoute('dashboard')"> Dashboard </button> |
-    <button v-on:click="changeRoute('bookkeeping')"> Bookkeeping </button>
-
-    <section id='main'>
-      <img alt="Vue logo" src="./assets/logo.png">
+    <section id='main' class="uk-container-expand">
       <Dashboard v-if="getRoute === 'dashboard'" />
-      <Bookkeeping v-if ="getRoute === 'bookkeeping'" />
+      <Bills v-if ="getRoute === 'bills'" />
+      <Todos v-if ="getRoute === 'todos'" />
+      <Copies v-if ="getRoute === 'copies'" />
     </section>
 
     <Footer />
@@ -20,31 +18,32 @@ import store from './store/index';
 import Navigation from './components/navigation/index';
 import Footer from './components/footer/index';
 import Dashboard from './components/dashboard/index';
-import Bookkeeping from './components/bookkeeping/index';
+import Bills from './components/bills/index';
+import Todos from './components/todos/index';
+import Copies from './components/copies/index';
 
-console.log({ here: store });
 export default {
   name: 'App',
   components: {
     Navigation,
     Footer,
     Dashboard,
-    Bookkeeping
+    Bills,
+    Todos,
+    Copies
   },
   computed: {
     getRoute () {
       return store.getters.getRoute; // get state
-    }
-  },
-  methods: {
-    changeRoute (route) {
-      store.commit('setRoute', route);
     }
   }
 };
 </script>
 
 <style>
+@import url("../node_modules/uikit/dist/css/uikit.min.css");
+
+
 body, html{
   margin: 0;
   padding: 0;
@@ -61,6 +60,8 @@ body, html{
 }
 
 section#main{
+  width: 100%;
+  height: 100%;
   min-height: 100vh;
 }
 

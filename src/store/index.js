@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import bookkeeping from './modules/bookkeeping';
+import bills from './modules/bills';
 
 
 Vue.use(Vuex);
@@ -20,6 +20,6 @@ export default new Vuex.Store({
     }
   },
   modules: {
-    bookkeeping
+    bills
   }
 });

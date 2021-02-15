@@ -22,7 +22,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
   section#dashboard{
     background-color: #4e4ceb;
     border: 2px solid #444;

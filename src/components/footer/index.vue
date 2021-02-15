@@ -46,6 +46,5 @@ export default {
     footer{
       margin: 0;
       padding: 20px;
-      background-color: #21e7dd;
     }
 </style>

@@ -65,4 +65,14 @@ section#main{
   min-height: 100vh;
 }
 
+button{
+  font-size: 20px;
+}
+
+.truncate{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 </style>

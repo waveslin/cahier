@@ -23,7 +23,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
     section#copies{
       background-color: #48e262;
       border: 2px solid #444;

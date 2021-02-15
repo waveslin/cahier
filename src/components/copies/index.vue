@@ -26,7 +26,6 @@ export default {
 <style scoped>
     section#copies{
       background-color: #48e262;
-      border: 2px solid #444;
       padding: 40px;
       height: 100%;
     }

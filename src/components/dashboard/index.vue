@@ -25,7 +25,6 @@ export default {
 <style scoped>
   section#dashboard{
     background-color: #4e4ceb;
-    border: 2px solid #444;
     padding: 40px;
     height: 100%;
   }

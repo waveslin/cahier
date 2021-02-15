@@ -26,7 +26,6 @@ export default {
 <style>
     section#todos{
       background-color: #e97070;
-      border: 2px solid #444;
       padding: 40px;
       height: 100%;
     }

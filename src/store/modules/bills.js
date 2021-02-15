@@ -15,9 +15,13 @@ const bookkeeping = {
     }
   },
   actions: {
-    getRecordsAsync ({ commit, state }) {
+    initial ({ commit, state }) {
       state.database.transaction((tx) => {
         tx.executeSql('CREATE TABLE IF NOT EXISTS bills (id unique, amount, category, reason, date)');
+      });
+    },
+    getRecordsAsync ({ commit, state }) {
+      state.database.transaction((tx) => {
         tx.executeSql('SELECT * FROM bills', [], (tx, results) => {
           commit('setRecords', Object.values(results.rows));
         });

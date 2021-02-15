@@ -36,6 +36,15 @@ export default {
     getRoute () {
       return store.getters.getRoute; // get state
     }
+  },
+  created () {
+    store.dispatch('bills/initial');
+  },
+  mounted () {
+    store.commit('setRoute', 'dashboard');
+  },
+  destroyed () {
+    console.log('close');
   }
 };
 </script>
@@ -43,10 +52,10 @@ export default {
 <style>
 @import url("../node_modules/uikit/dist/css/uikit.min.css");
 
-
 body, html{
   margin: 0;
   padding: 0;
+  cursor: default;
 }
 
 #cahier {
@@ -67,6 +76,7 @@ section#main{
 
 button{
   font-size: 20px;
+  cursor: default;
 }
 
 .truncate{

@@ -8,12 +8,12 @@
           <span uk-icon="icon: list; ratio: 1.5" class="uk-margin-small-left uk-margin-small-right"></span>
         </button>
       </div>
-      <div id="offcanvas-reveal" uk-offcanvas="mode: reveal; overlay: true; flip: true">
+      <div id="offcanvas-reveal" uk-offcanvas="mode: reveal; overlay: true; flip: true; esc-close: true">
         <div class="uk-offcanvas-bar">
-          <button v-on:click="changeRoute('dashboard')"> Dashboard </button> |
-          <button v-on:click="changeRoute('bills')"> Bills </button> |
-          <button v-on:click="changeRoute('copies')"> Copies </button> |
-          <button v-on:click="changeRoute('todos')"> Todos </button>
+          <button class="uk-offcanvas-close" v-on:click="changeRoute('dashboard')"> Dashboard </button> |
+          <button class="uk-offcanvas-close" v-on:click="changeRoute('bills')"> Bills </button> |
+          <button class="uk-offcanvas-close" v-on:click="changeRoute('copies')"> Copies </button> |
+          <button class="uk-offcanvas-close" v-on:click="changeRoute('todos')"> Todos </button>
         </div>
       </div>
     </header>
@@ -46,6 +46,7 @@ export default {
     margin: 0;
     padding: 20px;
     background: #fff;
+    cursor: default;
   }
 
   button{
@@ -59,9 +60,16 @@ export default {
 
   .uk-navbar-container:not(.uk-navbar-transparent){
     background: #fff;
+    border: 1px solid #444;
   }
 
   .uk-offcanvas-bar{
     background: #f8f8f8;
+  }
+
+  .uk-offcanvas-close{
+    position: initial;
+    top: initial;
+    right: initial;
   }
 </style>

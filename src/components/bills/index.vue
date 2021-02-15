@@ -23,7 +23,7 @@
              <td>{{record.category}}</td>
              <td>$ {{record.amount}}</td>
              <td>{{record.date}}</td>
-             <td class="abstract uk-text-truncate">{{record.reason !==  '' ? record.reason : 'N/A'}}</td>
+             <td class="abstract uk-text-truncate" v-bind:title="record.reason">{{record.reason !==  '' ? record.reason : 'N/A'}}</td>
              <td class="uk-flex uk-flex-around@s uk-flex-wrap">
               <button class="uk-button uk-button-default uk-margin-bottom uk-text-middle uk-text-nowrap" type="button">Edit <span class="uk-margin-small-left" uk-icon="file-edit"></span></button>
               <button class="uk-button uk-button-default uk-margin-bottom uk-text-middle uk-text-nowrap" type="button">Delete <span class="uk-margin-small-left" uk-icon="trash"></span></button>

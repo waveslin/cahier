@@ -1,6 +1,10 @@
 <template>
     <footer>
-      <h6>© Cahier, <a href="#terms_and_privacy" uk-toggle>Terms and Privacy</a> </h6>
+      <div>
+        <hr class="uk-divider-icon">
+      </div>
+
+      <h6>© Cahier, <a href="#terms_and_privacy" uk-toggle>Terms & Privacy</a> </h6>
 
       <div id="terms_and_privacy" uk-modal>
         <div class="uk-modal-dialog">
@@ -9,7 +13,7 @@
 
           <div class="uk-modal-header">
 
-            <h2 class="uk-modal-title">Terms and Privacy</h2>
+            <h2 class="uk-modal-title">Terms & Privacy</h2>
 
           </div>
 
@@ -82,5 +86,9 @@ export default {
     footer{
       margin: 0;
       padding: 10px;
+    }
+
+    .uk-modal-title{
+      font-size: 1.7rem;
     }
 </style>

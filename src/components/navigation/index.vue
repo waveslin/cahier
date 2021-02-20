@@ -10,10 +10,15 @@
       </div>
       <div id="offcanvas-reveal" uk-offcanvas="mode: reveal; overlay: true; flip: true; esc-close: true">
         <div class="uk-offcanvas-bar">
-          <button class="uk-offcanvas-close" v-on:click="changeRoute('dashboard')"> Dashboard </button> |
-          <button class="uk-offcanvas-close" v-on:click="changeRoute('bills')"> Bills </button> |
-          <button class="uk-offcanvas-close" v-on:click="changeRoute('copies')"> Copies </button> |
-          <button class="uk-offcanvas-close" v-on:click="changeRoute('todos')"> Todos </button>
+          <div class="offcanvas-heading">
+            <h1 class="uk-heading-medium">CAHIER</h1>
+          </div>
+          <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
+            <li><button class="uk-offcanvas-close" v-on:click="changeRoute('dashboard')"> Dashboard </button></li>
+            <li><button class="uk-offcanvas-close" v-on:click="changeRoute('bills')"> Bills </button></li>
+            <li><button class="uk-offcanvas-close" v-on:click="changeRoute('copies')"> Copies </button></li>
+            <li><button class="uk-offcanvas-close" v-on:click="changeRoute('todos')"> Todos </button></li>
+          </ul>
         </div>
       </div>
     </header>
@@ -71,5 +76,25 @@ export default {
     position: initial;
     top: initial;
     right: initial;
+  }
+
+  .offcanvas-heading h1{
+    padding: 20px 10px 150px 10px;
+    color: #222 !important;
+  }
+
+  ul{
+    padding: 0 0 30px 0;
+  }
+
+  li{
+    height: 50px;
+  }
+
+  li button{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    background-color: #f8f8f8;
   }
 </style>

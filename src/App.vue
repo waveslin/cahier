@@ -52,7 +52,8 @@ export default {
 <style>
 @import url("../node_modules/uikit/dist/css/uikit.min.css");
 
-body, html{
+body,
+html{
   margin: 0;
   padding: 0;
   cursor: default;
@@ -79,10 +80,26 @@ button{
   cursor: default;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .truncate{
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.uk-table td {
+    vertical-align: middle;
 }
 
 </style>

@@ -17,12 +17,48 @@ const bookkeeping = {
   actions: {
     initial ({ commit, state }) {
       state.database.transaction((tx) => {
-        tx.executeSql('CREATE TABLE IF NOT EXISTS bills (id unique, amount, category, reason, date)');
+        const query = 'CREATE TABLE IF NOT EXISTS bills (id unique, amount, category, reason, month, year, bill_date, created_date)';
+        tx.executeSql(query);
+      });
+    },
+    addNewRecordAsync ({ commit, state }, bill) {
+      const date = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const datetime = date.toLocaleDateString(undefined, options);
+      bill.bill_date = bill.bill_date instanceof Date && !isNaN(bill.bill_date) ? bill.bill_date : datetime;
+      const values = [bill.id, bill.amount, bill.category, bill.reason, bill.bill_date, bill.month, bill.year, datetime];
+      state.database.transaction((tx) => {
+        const query = 'INSERT INTO bills (id, amount, category, reason, bill_date, month, year, created_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        tx.executeSql(query, values);
+      });
+    },
+    editRecordAsync ({ commit, state }, bill) {
+      const date = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const datetime = date.toLocaleDateString(undefined, options);
+      bill.bill_date = bill.bill_date instanceof Date && !isNaN(bill.bill_date) ? bill.bill_date : datetime;
+      const values = [bill.amount, bill.category, bill.reason, bill.bill_date, bill.month, bill.year, bill.id];
+      state.database.transaction((tx) => {
+        const query = 'UPDATE bills SET amount = ?, category = ?, reason = ?, bill_date = ?, month = ?, year = ? WHERE id = ?';
+        tx.executeSql(query, values);
+      });
+    },
+    deleteRecordAsync ({ commit, state }, id) {
+      state.database.transaction((tx) => {
+        tx.executeSql('DELETE FROM bills WHERE id = ?', [id]);
       });
     },
     getRecordsAsync ({ commit, state }) {
       state.database.transaction((tx) => {
         tx.executeSql('SELECT * FROM bills', [], (tx, results) => {
+          commit('setRecords', Object.values(results.rows));
+        });
+      });
+    },
+    getRecordsByCreatedDateAsync ({ commit, state }, [month, year]) {
+      state.database.transaction((tx) => {
+        const query = 'SELECT * FROM bills WHERE month = ? AND year = ?';
+        tx.executeSql(query, [month, year], (tx, results) => {
           commit('setRecords', Object.values(results.rows));
         });
       });

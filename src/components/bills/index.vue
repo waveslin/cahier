@@ -4,8 +4,8 @@
         <h4 class="uk-heading-line uk-text-center uk-heading-small"><span>Billing</span></h4>
       </div>
       <div class="uk-flex uk-flex-right uk-text-nowrap table-options">
-          <button class="uk-button uk-button-default uk-text-middle uk-margin-small-right" type="button" v-on:click="getRecords()">Refresh <span class="uk-margin-small-left" uk-icon="refresh"></span></button>
-          <button class="uk-button uk-button-default uk-text-middle uk-margin-small-left" type="button" v-on:click="addNewBill()">Add Bill <span class="uk-margin-small-left" uk-icon="plus"></span></button>
+        <button class="uk-button uk-button-default uk-text-middle uk-margin-small-right" type="button" v-on:click="getRecords()">Refresh <span class="uk-margin-small-left" uk-icon="refresh"></span></button>
+        <button class="uk-button uk-button-default uk-text-middle uk-margin-small-left" type="button" v-on:click="addNewBill()">Add Bill <span class="uk-margin-small-left" uk-icon="plus"></span></button>
       </div>
       <div class="uk-padding uk-panel uk-overflow-auto">
        <table class="uk-table uk-table-hover uk-table-justify uk-table-divider uk-table-striped">
@@ -81,6 +81,9 @@
 
          </tbody>
        </table>
+      </div>
+      <div class="uk-flex uk-flex-right uk-text-nowrap table-options bottom-table-options">
+        <button class="uk-button uk-button-default uk-text-middle uk-margin-small-right" type="button" v-on:click="downloadCSV()"> Download CSV <span class="uk-margin-small-left" uk-icon="download"></span></button>
       </div>
     </section>
 </template>
@@ -220,6 +223,16 @@ export default {
     @media screen and (min-width: 345px) {
       .table-options{
         padding-right: 40px;
+      }
+    }
+
+    @media screen and (max-width: 750px) {
+      .bottom-table-options{
+        justify-content: center;
+      }
+
+      .bottom-table-options button {
+        margin: 0 !important;
       }
     }
 </style>

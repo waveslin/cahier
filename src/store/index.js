@@ -1,13 +1,14 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import bills from './modules/bills';
+import formats from './modules/formats';
 
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    route: 'bookkeeping'
+    route: 'bills'
   },
   getters: {
     getRoute: (state) => {
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     }
   },
   modules: {
+    formats,
     bills
   }
 });

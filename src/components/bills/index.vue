@@ -4,17 +4,17 @@
         <h4 class="uk-heading-line uk-text-center uk-heading-small"><span>Billing</span></h4>
       </div>
       <div class="uk-flex uk-flex-right uk-text-nowrap table-options">
-        <button class="uk-button uk-button-default uk-text-middle uk-margin-small-right" type="button" v-on:click="getRecords()">Refresh <span class="uk-margin-small-left" uk-icon="refresh"></span></button>
+        <button class="uk-button uk-button-default uk-text-middle uk-margin-small-right" type="button" v-on:click="refreshRecords()">Refresh <span class="uk-margin-small-left" uk-icon="refresh"></span></button>
         <button class="uk-button uk-button-default uk-text-middle uk-margin-small-left" type="button" v-on:click="addNewBill()">Add Bill <span class="uk-margin-small-left" uk-icon="plus"></span></button>
       </div>
       <div class="uk-padding uk-panel uk-overflow-auto">
        <table class="uk-table uk-table-hover uk-table-justify uk-table-divider uk-table-striped">
          <thead>
            <tr>
-             <td><h3>Type</h3></td>
-             <td><h3>Amount</h3></td>
              <td><h3>Date</h3></td>
-             <td><h3>Reason</h3></td>
+             <td><h3>Category</h3></td>
+             <td><h3>Amount</h3></td>
+             <td><h3>Description</h3></td>
              <td><h3>Options</h3></td>
            </tr>
          </thead>
@@ -22,68 +22,88 @@
 
            <tr v-for="(row, index) in rows" :key="`new-bill-${index}`" :id="`new_bill_${index}`">
 
-             <td>
-               <select :id="`category_${index}`" v-model="row.category" >
-                 <option>daily</option>
-                 <option>meal</option>
-                 <option>bank</option>
-                 <option>shopping</option>
-                 <option>service</option>
-                 <option>other</option>
-               </select>
-              </td>
+            <td><input type="text" :id="`datetime_${index}`" v-model="row.datetime" class="row-datetime" readonly/></td>
 
-             <td>$ <input type="number" :id="`amount_${index}`" v-model="row.amount" /> </td>
+            <td>
+              <select :id="`category_${index}`" v-model="row.category" >
+                <option>food</option>
+                <option>rent</option>
+                <option>medical</option>
+                <option>tansportation</option>
+                <option>entertainment</option>
+                <option>business expense</option>
+                <option>luxery</option>
+                <option>travel</option>
+                <option>charity</option>
+                <option>other</option>
+              </select>
+            </td>
 
-             <td><input type="text" :id="`datetime_${index}`" v-model="row.datetime" class="row-datetime" readonly/></td>
+            <td>$ <input type="number" :id="`amount_${index}`" v-model="row.amount" /> </td>
 
-             <td><textarea :id="`reason_${index}`" v-model="row.reason"></textarea></td>
+            <td><textarea :id="`description_${index}`" v-model="row.description"></textarea></td>
 
-             <td class="uk-flex uk-flex-around" :id="`options_${index}`">
+            <td class="uk-flex uk-flex-around" :id="`options_${index}`">
               <button class="uk-button uk-button-default uk-text-middle uk-text-nowrap table-button" type="button" v-on:click="saveNewRecord(index)"> Save <span class="uk-margin-small-left" uk-icon="play-circle"></span></button>
               <button class="uk-button uk-button-default uk-text-middle uk-text-nowrap table-button" type="button" v-on:click="cancelNewRecord(index)"> Cancel <span class="uk-margin-small-left" uk-icon="ban"></span></button>
-             </td>
+            </td>
            </tr>
 
-           <tr v-for="(record, index) in getRoute" :key="`bill-${index}`">
+           <tr v-for="(record, index) in getRecords" :key="`bill-${index}`">
 
-              <td v-if="record.edit">
-                <select v-model="record.category" >
-                  <option>daily</option>
-                  <option>meal</option>
-                  <option>bank</option>
-                  <option>shopping</option>
-                  <option>service</option>
-                  <option>other</option>
-                </select>
-              </td>
-              <td v-else>{{record.category}}</td>
+            <td v-if="record.edit"><input type="text" v-model="record.bill_date" class="row-datetime" readonly/></td>
+            <td v-else>{{record.bill_date}}</td>
 
-              <td v-if="record.edit">$ <input type="number" v-model="record.amount" /> </td>
-              <td v-else>$ {{record.amount}}</td>
+            <td v-if="record.edit">
+              <select v-model="record.category" >
+                <option>food</option>
+                <option>rent</option>
+                <option>medical</option>
+                <option>tansportation</option>
+                <option>entertainment</option>
+                <option>business expense</option>
+                <option>luxery</option>
+                <option>travel</option>
+                <option>charity</option>
+                <option>other</option>
+              </select>
+            </td>
+            <td v-else>{{record.category}}</td>
 
-              <td v-if="record.edit"><input type="text" v-model="record.bill_date" class="row-datetime" readonly/></td>
-              <td v-else>{{record.bill_date}}</td>
+            <td v-if="record.edit">$ <input type="number" v-model="record.amount" /> </td>
+            <td v-else>$ {{record.amount}}</td>
 
-              <td v-if="record.edit"><textarea v-model="record.reason"></textarea></td>
-              <td v-else class="abstract uk-text-truncate" v-bind:title="record.reason">{{record.reason !==  '' ? record.reason : 'N/A'}}</td>
+            <td v-if="record.edit"><textarea v-model="record.description"></textarea></td>
+            <td v-else class="abstract uk-text-truncate" v-bind:title="record.description">{{record.description !==  '' ? record.description : 'N/A'}}</td>
 
-              <td v-if="record.edit" class="uk-flex uk-flex-around">
-                <button class="uk-button uk-button-default uk-text-middle uk-text-nowrap table-button" type="button" v-on:click="saveEditedRecord(record)"> Save <span class="uk-margin-small-left" uk-icon="play-circle"></span></button>
-                <button class="uk-button uk-button-default uk-text-middle uk-text-nowrap table-button" type="button" v-on:click="cancelEditRecord(record)"> Cancel <span class="uk-margin-small-left" uk-icon="ban"></span></button>
-              </td>
-              <td v-else class="uk-flex uk-flex-around">
-                <button class="uk-button uk-button-default uk-text-middle uk-text-nowrap table-button" type="button" v-on:click="EditRecord (record)"> Edit <span class="uk-margin-small-left" uk-icon="file-edit"></span></button>
-                <button class="uk-button uk-button-default uk-text-middle uk-text-nowrap table-button" type="button" v-on:click="deleteRecord (record.id)"> Delete <span class="uk-margin-small-left" uk-icon="trash"></span></button>
-              </td>
+            <td v-if="record.edit" class="uk-flex uk-flex-around">
+              <button class="uk-button uk-button-default uk-text-middle uk-text-nowrap table-button" type="button" v-on:click="saveEditedRecord(record)"> Save <span class="uk-margin-small-left" uk-icon="play-circle"></span></button>
+              <button class="uk-button uk-button-default uk-text-middle uk-text-nowrap table-button" type="button" v-on:click="cancelEditRecord(record)"> Cancel <span class="uk-margin-small-left" uk-icon="ban"></span></button>
+            </td>
+            <td v-else class="uk-flex uk-flex-around">
+              <button class="uk-button uk-button-default uk-text-middle uk-text-nowrap table-button" type="button" v-on:click="EditRecord (record)"> Edit <span class="uk-margin-small-left" uk-icon="file-edit"></span></button>
+              <button class="uk-button uk-button-default uk-text-middle uk-text-nowrap table-button" type="button" v-on:click="deleteRecord (record.id)"> Delete <span class="uk-margin-small-left" uk-icon="trash"></span></button>
+            </td>
 
            </tr>
 
          </tbody>
        </table>
       </div>
-      <div class="uk-flex uk-flex-right uk-text-nowrap table-options bottom-table-options">
-        <button class="uk-button uk-button-default uk-text-middle uk-margin-small-right" type="button" v-on:click="downloadCSV()"> Download CSV <span class="uk-margin-small-left" uk-icon="download"></span></button>
+      <div class="uk-flex uk-flex-right uk-text-nowrap table-options bottom-table-options" v-if="getRecords.length > 0">
+        <button class="uk-button uk-button-default uk-text-middle uk-margin-small-right" type="button" uk-toggle="target: #download_bills"> Download CSV <span class="uk-margin-small-left" uk-icon="download"></span></button>
+      </div>
+      <div id="download_bills" uk-modal>
+          <div class="uk-modal-dialog uk-modal-body">
+              <h2 class="uk-modal-title">Download CSV Files</h2>
+              <div>
+                <select v-model="download_csv" >
+                  <option v-for="({ year, month }, index) in year_month_list" :key="`year-month-${index}`" >{{year}} - {{month}}</option>
+                </select>
+              </div>
+              <button class="uk-modal-close" type="button">Download</button>
+              <button class="uk-modal-close" type="button">Cancel</button>
+          </div>
       </div>
     </section>
 </template>
@@ -100,35 +120,42 @@ export default {
     return {
       rows: [],
       modified_time: 0,
+      download_csv: {},
+      year_month_list: [],
       uikit_Notification_Position: 'top-center'
     };
   },
   computed: {
-    getRoute () {
+    getRecords () {
       return store.getters['bills/getRecords']; // get state
+    },
+    getDateLocale () {
+      return store.getters['formats/getDateLocale'];
+    },
+    getDateFormat () {
+      return store.getters['formats/getDateFormat'];
     },
     getDate () {
       const date = new Date();
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      return date.toLocaleDateString(undefined, options);
+      return date.toLocaleDateString(this.getDateLocale, this.getDateFormat);
     }
   },
   watch: {
     rows: function (newRows, oldRows) {
       const date = new Date();
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      const datetime = date.toLocaleDateString(undefined, options);
-      const month = datetime.split(' ')[2];
-      const year = datetime.split(' ')[3];
+      const datetime = date.toLocaleDateString(this.getDateLocale, this.getDateFormat);
       this.rows.forEach(function (row) {
         row.datetime = datetime;
-        row.month = month;
-        row.year = year;
+        row.month = date.getMonth() + 1;
+        row.year = date.getFullYear();
         row.id = Date.now();
       });
     },
+    getRecords: function (oldRecords, newRecords) {
+      this.year_month_list = newRecords.map(({ year, month }) => { return { year, month }; });
+    },
     modified_time: function (oldModified, newModified) {
-      this.getRecords();
+      this.refreshRecords();
     },
     uikit_Notification_Position: function (newPosition, oldPosition) {
       if (window.innerWidth <= 340) { this.uikit_Notification_Position = 'bottom-center'; }
@@ -155,7 +182,8 @@ export default {
       this.rows.splice(index, 1);
     },
     saveNewRecord (index) {
-      if (Object.values(this.rows[index]).length >= 4) {
+      const validation = Object.values(this.rows[index]).every(function (row) { return row !== null || row !== undefined; });
+      if (validation) {
         store.dispatch('bills/addNewRecordAsync', this.rows[index]);
         this.rows.splice(index, 1);
         this.modified_time += 1;
@@ -167,7 +195,7 @@ export default {
       store.dispatch('bills/deleteRecordAsync', id);
       this.modified_time += 1;
     },
-    getRecords () {
+    refreshRecords () {
       UIkit.notification({ message: '<span  class="uk-margin-right" uk-icon="icon: info"></span> already refreshed', status: 'primary', pos: this.uikit_Notification_Position, timeout: 1000 });
       store.dispatch('bills/getRecordsAsync');
     }

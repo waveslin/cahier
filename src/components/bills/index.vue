@@ -22,7 +22,7 @@
 
            <tr v-for="(row, index) in rows" :key="`new-bill-${index}`" :id="`new_bill_${index}`">
 
-            <td><input type="text" :id="`datetime_${index}`" v-model="row.datetime" class="row-datetime" readonly/></td>
+            <td><input type="text" :id="`datetime_${index}`" v-model="row.bill_date" class="row-datetime" readonly/></td>
 
             <td>
               <select :id="`category_${index}`" v-model="row.category" >
@@ -51,7 +51,7 @@
 
            <tr v-for="(record, index) in getRecords" :key="`bill-${index}`">
 
-            <td v-if="record.edit"><input type="text" v-model="record.bill_date" class="row-datetime" readonly/></td>
+            <td v-if="record.edit"><input type="text" v-model="record.bill_date" class=""/></td>
             <td v-else>{{record.bill_date}}</td>
 
             <td v-if="record.edit">
@@ -98,11 +98,13 @@
               <h2 class="uk-modal-title">Download CSV Files</h2>
               <div>
                 <select v-model="download_csv" >
-                  <option v-for="({ year, month }, index) in year_month_list" :key="`year-month-${index}`" >{{year}} - {{month}}</option>
+                  <option v-for="({ year, month }, index) in year_month_list" :key="`year-month-${index}`" >{{year}} - {{month.toString().padStart(2, '0')}}</option>
                 </select>
               </div>
-              <button class="uk-modal-close" type="button">Download</button>
-              <button class="uk-modal-close" type="button">Cancel</button>
+              <div class="uk-flex uk-flex-right uk-text-nowrap">
+                <button class="uk-modal-close" type="button">Download</button>
+                <button class="uk-modal-close" type="button">Cancel</button>
+              </div>
           </div>
       </div>
     </section>
@@ -145,14 +147,18 @@ export default {
       const date = new Date();
       const datetime = date.toLocaleDateString(this.getDateLocale, this.getDateFormat);
       this.rows.forEach(function (row) {
-        row.datetime = datetime;
+        row.bill_date = datetime;
         row.month = date.getMonth() + 1;
         row.year = date.getFullYear();
         row.id = Date.now();
       });
     },
     getRecords: function (oldRecords, newRecords) {
-      this.year_month_list = newRecords.map(({ year, month }) => { return { year, month }; });
+      var list = newRecords.map(({ year, month }) => { return { year, month }; });
+      // console.log(list);
+      // list = list.filters(({ year, month }, index) => { return list.indexOf({ year, month }) !== index; });
+      // console.log(list);
+      this.year_month_list = [...new Set(list)];
     },
     modified_time: function (oldModified, newModified) {
       this.refreshRecords();
@@ -182,8 +188,13 @@ export default {
       this.rows.splice(index, 1);
     },
     saveNewRecord (index) {
-      const validation = Object.values(this.rows[index]).every(function (row) { return row !== null || row !== undefined; });
-      if (validation) {
+      const row = this.rows[index];
+      const validation = Object.values(row).every(function (value) { return value !== null && value !== undefined; });
+      const hasAllProp = ['bill_date', 'description', 'category'].every(function (key) { return key in row; });
+      const hasAmount = 'amount' in row && Number(row.amount) > 0;
+      if (validation && hasAllProp && hasAmount) {
+        this.rows[index].amount = Number(row.amount);
+        console.log(this.rows[index]);
         store.dispatch('bills/addNewRecordAsync', this.rows[index]);
         this.rows.splice(index, 1);
         this.modified_time += 1;
@@ -239,14 +250,18 @@ export default {
         margin: 0 5px;
       }
 
-    .row-datetime{
+    .row-datetime,
+    .row-datetime:focus{
       width: 100%;
       height: 100%;
       border: none;
+      outline: none;
       background: none;
       font-size: 16px;
       text-align: center;
     }
+
+
 
     @media screen and (min-width: 345px) {
       .table-options{

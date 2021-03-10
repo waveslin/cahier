@@ -13,7 +13,12 @@ const bills = {
   },
   mutations: {
     setRecords: (state, newRecords) => {
-      state.records = newRecords;
+      const records = newRecords.map(function (newRecord) {
+        const date = new Date(newRecord.bill_date);
+        const datetime = date.toLocaleDateString(formats.state.date_locale, formats.state.date_format);
+        return { ...newRecord, bill_date: datetime };
+      });
+      state.records = records;
     }
   },
   actions: {
@@ -25,7 +30,7 @@ const bills = {
     },
     addNewRecordAsync ({ commit, state }, bill) {
       const date = new Date();
-      const datetime = date.toLocaleDateString(formats.getters.getDateLocale, formats.getters.getDateFormat);
+      const datetime = date.toLocaleDateString(formats.state.date_locale, formats.state.date_format);
       bill.bill_date = bill.bill_date instanceof Date && !isNaN(bill.bill_date) ? bill.bill_date : datetime;
       const values = [bill.id, bill.amount, bill.category, bill.description, bill.bill_date, bill.month, bill.year, datetime];
       state.database.transaction((tx) => {
@@ -35,7 +40,7 @@ const bills = {
     },
     editRecordAsync ({ commit, state }, bill) {
       const date = new Date();
-      const datetime = date.toLocaleDateString(formats.getters.getDateLocale, formats.getters.getDateFormat);
+      const datetime = date.toLocaleDateString(formats.state.date_locale, formats.state.date_format);
       bill.bill_date = bill.bill_date instanceof Date && !isNaN(bill.bill_date) ? bill.bill_date : datetime;
       const values = [bill.amount, bill.category, bill.description, bill.bill_date, bill.month, bill.year, bill.id];
       state.database.transaction((tx) => {

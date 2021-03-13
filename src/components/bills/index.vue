@@ -261,8 +261,6 @@ export default {
       text-align: center;
     }
 
-
-
     @media screen and (min-width: 345px) {
       .table-options{
         padding-right: 40px;

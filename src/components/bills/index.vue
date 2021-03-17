@@ -26,16 +26,7 @@
 
             <td>
               <select :id="`category_${index}`" v-model="row.category" >
-                <option>food</option>
-                <option>rent</option>
-                <option>medical</option>
-                <option>tansportation</option>
-                <option>entertainment</option>
-                <option>business expense</option>
-                <option>luxery</option>
-                <option>travel</option>
-                <option>charity</option>
-                <option>other</option>
+                <option v-for="(option, index) in getCategoryOptions" :key="`categories-${index}`">{{option}}</option>
               </select>
             </td>
 
@@ -56,16 +47,7 @@
 
             <td v-if="record.edit">
               <select v-model="record.category" >
-                <option>food</option>
-                <option>rent</option>
-                <option>medical</option>
-                <option>tansportation</option>
-                <option>entertainment</option>
-                <option>business expense</option>
-                <option>luxery</option>
-                <option>travel</option>
-                <option>charity</option>
-                <option>other</option>
+                <option v-for="(option, index) in getCategoryOptions" :key="`categories-${index}`">{{option}}</option>
               </select>
             </td>
             <td v-else>{{record.category}}</td>
@@ -131,6 +113,9 @@ export default {
     getRecords () {
       return store.getters['bills/getRecords']; // get state
     },
+    getCategoryOptions () {
+      return store.getters['options/getCategoryOptions'];
+    },
     getDateLocale () {
       return store.getters['formats/getDateLocale'];
     },
@@ -154,7 +139,7 @@ export default {
       });
     },
     getRecords: function (oldRecords, newRecords) {
-      var list = newRecords.map(({ year, month }) => { return { year, month }; });
+      var list = newRecords.map(function ({ year, month }) { return { year, month }; });
       // console.log(list);
       // list = list.filters(({ year, month }, index) => { return list.indexOf({ year, month }) !== index; });
       // console.log(list);
@@ -194,7 +179,6 @@ export default {
       const hasAmount = 'amount' in row && Number(row.amount) > 0;
       if (validation && hasAllProp && hasAmount) {
         this.rows[index].amount = Number(row.amount);
-        console.log(this.rows[index]);
         store.dispatch('bills/addNewRecordAsync', this.rows[index]);
         this.rows.splice(index, 1);
         this.modified_time += 1;

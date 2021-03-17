@@ -6,18 +6,18 @@ const formats = {
     date_format: { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' }
   },
   getters: {
-    getDateLocale: (state) => {
+    getDateLocale: function (state) {
       return state.date_locale;
     },
-    getDateLocaleList: (state) => {
+    getDateLocaleList: function (state) {
       return state.date_locale_list;
     },
-    getDateFormat: (state) => {
+    getDateFormat: function (state) {
       return state.date_format;
     }
   },
   mutations: {
-    setCurrentLocale: (state, newDateLocale) => {
+    setCurrentLocale: function (state, newDateLocale) {
       state.date_locale = newDateLocale;
     }
   }

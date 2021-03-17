@@ -7,12 +7,12 @@ const bills = {
     records: []
   },
   getters: {
-    getRecords: (state) => {
+    getRecords: function (state) {
       return state.records;
     }
   },
   mutations: {
-    setRecords: (state, newRecords) => {
+    setRecords: function (state, newRecords) {
       const records = newRecords.map(function (newRecord) {
         const date = new Date(newRecord.bill_date);
         const datetime = date.toLocaleDateString(formats.state.date_locale, formats.state.date_format);
@@ -23,7 +23,7 @@ const bills = {
   },
   actions: {
     initial ({ commit, state }) {
-      state.database.transaction((tx) => {
+      state.database.transaction(function (tx) {
         const query = 'CREATE TABLE IF NOT EXISTS bills (id unique, amount, category, description, month, year, bill_date, created_date)';
         tx.executeSql(query);
       });
@@ -33,7 +33,7 @@ const bills = {
       const datetime = date.toLocaleDateString(formats.state.date_locale, formats.state.date_format);
       bill.bill_date = bill.bill_date instanceof Date && !isNaN(bill.bill_date) ? bill.bill_date : datetime;
       const values = [bill.id, bill.amount, bill.category, bill.description, bill.bill_date, bill.month, bill.year, datetime];
-      state.database.transaction((tx) => {
+      state.database.transaction(function (tx) {
         const query = 'INSERT INTO bills (id, amount, category, description, bill_date, month, year, created_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         tx.executeSql(query, values);
       });
@@ -43,27 +43,27 @@ const bills = {
       const datetime = date.toLocaleDateString(formats.state.date_locale, formats.state.date_format);
       bill.bill_date = bill.bill_date instanceof Date && !isNaN(bill.bill_date) ? bill.bill_date : datetime;
       const values = [bill.amount, bill.category, bill.description, bill.bill_date, bill.month, bill.year, bill.id];
-      state.database.transaction((tx) => {
+      state.database.transaction(function (tx) {
         const query = 'UPDATE bills SET amount = ?, category = ?, description = ?, bill_date = ?, month = ?, year = ? WHERE id = ?';
         tx.executeSql(query, values);
       });
     },
     deleteRecordAsync ({ commit, state }, id) {
-      state.database.transaction((tx) => {
+      state.database.transaction(function (tx) {
         tx.executeSql('DELETE FROM bills WHERE id = ?', [id]);
       });
     },
     getRecordsAsync ({ commit, state }) {
-      state.database.transaction((tx) => {
-        tx.executeSql('SELECT * FROM bills', [], (tx, results) => {
+      state.database.transaction(function (tx) {
+        tx.executeSql('SELECT * FROM bills', [], function (tx, results) {
           commit('setRecords', Object.values(results.rows));
         });
       });
     },
     getRecordsByCreatedDateAsync ({ commit, state }, [month, year]) {
-      state.database.transaction((tx) => {
+      state.database.transaction(function (tx) {
         const query = 'SELECT * FROM bills WHERE month = ? AND year = ?';
-        tx.executeSql(query, [month, year], (tx, results) => {
+        tx.executeSql(query, [month, year], function (tx, results) {
           commit('setRecords', Object.values(results.rows));
         });
       });

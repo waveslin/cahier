@@ -43,7 +43,7 @@
            <tr v-for="(record, index) in getRecords" :key="`bill-${index}`">
 
             <td v-if="record.edit"><input type="text" v-model="record.bill_date" class=""/></td>
-            <td v-else>{{record.bill_date}}</td>
+            <td v-else>{{toLocalDate(record.bill_date)}}</td>
 
             <td v-if="record.edit">
               <select v-model="record.category" >
@@ -121,20 +121,15 @@ export default {
     },
     getDateFormat () {
       return store.getters['formats/getDateFormat'];
-    },
-    getDate () {
-      const date = new Date();
-      return date.toLocaleDateString(this.getDateLocale, this.getDateFormat);
     }
   },
   watch: {
     rows: function (newRows, oldRows) {
       const date = new Date();
-      const datetime = date.toLocaleDateString(this.getDateLocale, this.getDateFormat);
       this.rows.forEach(function (row) {
-        row.bill_date = datetime;
         row.month = date.getMonth() + 1;
         row.year = date.getFullYear();
+        row.bill_date = [row.year.toString(), row.month.toString().padStart(2, '0'), date.getDate().toString().padStart(2, '0')].join('-');
         row.id = Date.now();
       });
     },
@@ -153,6 +148,10 @@ export default {
     }
   },
   methods: {
+    toLocalDate (datetime) {
+      const date = new Date(datetime);
+      return date.toLocaleDateString(this.getDateLocale, this.getDateFormat);
+    },
     EditRecord (record) {
       record.edit = true;
       this.rows.push();
@@ -162,6 +161,9 @@ export default {
       this.rows.pop();
     },
     saveEditedRecord (record) {
+      if (!record.bill_date.toString().includes(store.getters['bills/getInitialHMS'])) {
+        record.bill_date = record.bill_date.toString().split()[0] + store.getters['bills/getInitialHMS'];
+      }
       store.dispatch('bills/editRecordAsync', record);
       record.edit = false;
       this.rows.pop();

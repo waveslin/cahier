@@ -1,22 +1,26 @@
-import formats from './formats';
-
 const bills = {
   namespaced: true,
   state: {
     database: openDatabase('cahier', '1.0', 'ThIS database is stored at the local browser and used by Cahier. DO NOT KEEP ANY SENSITIVE DATA.', 5 * 1024 * 1024),
-    records: []
+    records: [],
+    initial_time_hms: ' 00:00:00'
   },
   getters: {
     getRecords: function (state) {
       return state.records;
+    },
+    getInitialHMS: function (state) {
+      return state.initial_time_hms;
     }
   },
   mutations: {
     setRecords: function (state, newRecords) {
       const records = newRecords.map(function (newRecord) {
         const date = new Date(newRecord.bill_date);
-        const datetime = date.toLocaleDateString(formats.state.date_locale, formats.state.date_format);
-        return { ...newRecord, bill_date: datetime };
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        const datetime = [date.getFullYear(), (date.getMonth() + 1).toString().padStart(2, '0'), date.getDate().toString().padStart(2, '0')].join('-') + state.initial_time_hms;
+        return { ...newRecord, month, year, bill_date: datetime };
       });
       state.records = records;
     }
@@ -30,7 +34,7 @@ const bills = {
     },
     addNewRecordAsync ({ commit, state }, bill) {
       const date = new Date();
-      const datetime = date.toLocaleDateString(formats.state.date_locale, formats.state.date_format);
+      const datetime = [date.getFullYear(), (date.getMonth() + 1).toString().padStart(2, '0'), (date.getDate()).toString().padStart(2, '0')].join('-') + state.initial_time_hms;
       bill.bill_date = bill.bill_date instanceof Date && !isNaN(bill.bill_date) ? bill.bill_date : datetime;
       const values = [bill.id, bill.amount, bill.category, bill.description, bill.bill_date, bill.month, bill.year, datetime];
       state.database.transaction(function (tx) {
@@ -39,9 +43,10 @@ const bills = {
       });
     },
     editRecordAsync ({ commit, state }, bill) {
-      const date = new Date();
-      const datetime = date.toLocaleDateString(formats.state.date_locale, formats.state.date_format);
-      bill.bill_date = bill.bill_date instanceof Date && !isNaN(bill.bill_date) ? bill.bill_date : datetime;
+      const date = new Date(bill.bill_date);
+      bill.month = date.getMonth() + 1;
+      bill.year = date.getFullYear();
+      bill.bill_date = [date.getFullYear(), (date.getMonth() + 1).toString().padStart(2, '0'), (date.getDate()).toString().padStart(2, '0')].join('-') + state.initial_time_hms;
       const values = [bill.amount, bill.category, bill.description, bill.bill_date, bill.month, bill.year, bill.id];
       state.database.transaction(function (tx) {
         const query = 'UPDATE bills SET amount = ?, category = ?, description = ?, bill_date = ?, month = ?, year = ? WHERE id = ?';

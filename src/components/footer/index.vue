@@ -1,5 +1,5 @@
 <template>
-    <footer>
+    <footer class="uk-card-secondary">
       <div>
         <hr class="uk-divider-icon">
       </div>

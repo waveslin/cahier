@@ -1,6 +1,6 @@
 <template>
     <header class="uk-navbar-container" uk-navbar>
-      <div class="uk-navbar-left">
+      <div class="uk-navbar-left ">
         <h1 class="uk-heading-medium uk-margin-remove-bottom">CAHIER</h1>
       </div>
       <div class="uk-navbar-right">
@@ -16,7 +16,7 @@
           <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
             <li><button class="uk-offcanvas-close" v-on:click="changeRoute('dashboard')"> Dashboard </button></li>
             <li><button class="uk-offcanvas-close" v-on:click="changeRoute('bills')"> Bills </button></li>
-            <li><button class="uk-offcanvas-close" v-on:click="changeRoute('copies')"> Copies </button></li>
+            <li><button class="uk-offcanvas-close" v-on:click="changeRoute('jobs')"> Jobs </button></li>
             <li><button class="uk-offcanvas-close" v-on:click="changeRoute('todos')"> Todos </button></li>
           </ul>
         </div>

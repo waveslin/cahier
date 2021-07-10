@@ -1,15 +1,12 @@
 <template>
     <section id='copies' class="uk-card-secondary">
 
-      <div class="uk-background-secondary uk-light uk-padding uk-panel">
-        <p class="uk-h4">Copies</p>
-      </div>
     </section>
 </template>
 
 <script>
 export default {
-  name: 'Copies',
+  name: 'Jobs',
   props: {},
   components: {},
   data () {
@@ -25,8 +22,9 @@ export default {
 
 <style scoped>
     section#copies{
-      background-color: #48e262;
-      padding: 40px;
+      min-height: 100vh;
       height: 100%;
+      box-sizing: border-box;
+      font-size: 1rem;
     }
 </style>

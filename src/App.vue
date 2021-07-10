@@ -6,7 +6,7 @@
       <Dashboard v-if="getRoute === 'dashboard'" />
       <Bills v-if ="getRoute === 'bills'" />
       <Todos v-if ="getRoute === 'todos'" />
-      <Copies v-if ="getRoute === 'copies'" />
+      <Jobs v-if ="getRoute === 'jobs'" />
     </section>
 
     <Footer />
@@ -20,7 +20,7 @@ import Footer from './components/footer/index';
 import Dashboard from './components/dashboard/index';
 import Bills from './components/bills/index';
 import Todos from './components/todos/index';
-import Copies from './components/copies/index';
+import Jobs from './components/jobs/index';
 
 export default {
   name: 'App',
@@ -30,7 +30,7 @@ export default {
     Dashboard,
     Bills,
     Todos,
-    Copies
+    Jobs
   },
   computed: {
     getRoute () {

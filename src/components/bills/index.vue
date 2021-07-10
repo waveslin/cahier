@@ -1,5 +1,5 @@
 <template>
-    <section id='bills' class="">
+    <section id='bills' class="uk-card-secondary">
       <div class="uk-padding uk-panel">
         <h4 class="uk-heading-line uk-text-center uk-heading-small"><span>Billing</span></h4>
       </div>

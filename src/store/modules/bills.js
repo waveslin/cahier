@@ -1,7 +1,7 @@
 const bills = {
   namespaced: true,
   state: {
-    database: openDatabase('cahier', '1.0', 'ThIS database is stored at the local browser and used by Cahier. DO NOT KEEP ANY SENSITIVE DATA.', 5 * 1024 * 1024),
+    database: openDatabase('cahier', '1.0', 'This database is stored at the local browser and used by Cahier. DO NOT KEEP ANY SENSITIVE DATA.', 5 * 1024 * 1024),
     records: [],
     initial_time_hms: ' 00:00:00'
   },
